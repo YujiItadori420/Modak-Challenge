@@ -1,6 +1,9 @@
 package com.modak.challenge.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +23,9 @@ public class User {
     private String email;
     @OneToMany(mappedBy = "receiver")
     private List<Notification> notifications = new ArrayList<>();
+
+    /*
+    Although this class now only has a single field,
+    I decided to create a User object for greater scalability if I wanted to add more attributes to the User type in the future.
+     */
 }

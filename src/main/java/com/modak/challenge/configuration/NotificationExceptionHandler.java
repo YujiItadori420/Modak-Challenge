@@ -4,27 +4,23 @@ import com.modak.challenge.dto.ErrorResponseDto;
 import com.modak.challenge.exception.UnprocessableEntityException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.NoSuchElementException;
-
 import static org.springframework.http.HttpStatus.*;
 
 
 @Slf4j
-@Order(Ordered.HIGHEST_PRECEDENCE) // Asegura que este controlador tenga alta prioridad
+@RestControllerAdvice
 public class NotificationExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UnprocessableEntityException.class)
     public ResponseEntity<ErrorResponseDto> handleUnprocessableEntityException(UnprocessableEntityException ex) {
 
-        log.error("Se ha superado el límite de envío de correos electrónicos para el destinatario ", ex);
+        log.error("The email sending limit for the recipient has been exceeded.", ex);
 
         var errorResponseDTO = ErrorResponseDto.builder()
                 .title("Rate Limit error")
@@ -42,10 +38,11 @@ public class NotificationExceptionHandler extends ResponseEntityExceptionHandler
         var errorResponseDTO = ErrorResponseDto.builder()
                 .title("Parameter type mismatch")
                 .statusCode(String.valueOf(BAD_REQUEST.value()))
-                .detail("fallo")
+                .detail("Fail")
                 .build();
         return ResponseEntity.status(BAD_REQUEST).contentType(MediaType.APPLICATION_PROBLEM_JSON).body(errorResponseDTO);
     }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponseDto> handleIlegalArgumentException(IllegalArgumentException ex) {
 

@@ -38,12 +38,11 @@ class ChallengeApplicationTests {
 
     @Test
     void testSendEmail_StatusNotificationWithinLimit() {
-        // Caso de prueba: Envío de notificación de estado dentro del límite
+
         NotificationDto statusDto = new NotificationDto();
         statusDto.setType(NotificationType.STATUS);
         statusDto.setDestinationMail("user@example.com");
 
-        // Simular que se ha enviado una notificación de estado en el último minuto
         when(notificationRepository.countByLocalDateTimeSendedBetweenAndReceiverEmailAndType(
                 any(LocalDateTime.class), any(LocalDateTime.class), eq("user@example.com"), eq(NotificationType.STATUS)
         )).thenReturn(1L);
@@ -53,17 +52,14 @@ class ChallengeApplicationTests {
 
     @Test
     void testSendEmail_StatusNotificationExceedsLimit() {
-        // Caso de prueba: Envío de notificación de estado que excede el límite
         NotificationDto statusDto = new NotificationDto();
         statusDto.setType(NotificationType.STATUS);
         statusDto.setDestinationMail("user@example.com");
 
-        // Simular que se han enviado 3 notificaciones de estado en el último minuto
         when(notificationRepository.countByLocalDateTimeSendedBetweenAndReceiverEmailAndType(
                 any(LocalDateTime.class), any(LocalDateTime.class), eq("user@example.com"), eq(NotificationType.STATUS)
         )).thenReturn(3L);
 
-        // El cuarto intento debería lanzar una excepción
         assertThrows(UnprocessableEntityException.class, () -> notificationService.sendEmail(statusDto));
     }
 
@@ -74,7 +70,6 @@ class ChallengeApplicationTests {
         newsDto.setType(NotificationType.NEWS);
         newsDto.setDestinationMail("user@example.com");
 
-        // Simular que no se han enviado notificaciones de noticias en el último día
         when(notificationRepository.countByLocalDateTimeSendedBetweenAndReceiverEmailAndType(
                 any(LocalDateTime.class), any(LocalDateTime.class), eq("user@example.com"), eq(NotificationType.NEWS)
         )).thenReturn(0L);
@@ -88,7 +83,6 @@ class ChallengeApplicationTests {
         newsDto.setType(NotificationType.NEWS);
         newsDto.setDestinationMail("user@example.com");
 
-        // Simular que se ha enviado una notificación de noticias en el último día
         when(notificationRepository.countByLocalDateTimeSendedBetweenAndReceiverEmailAndType(
                 any(LocalDateTime.class), any(LocalDateTime.class), eq("user@example.com"), eq(NotificationType.NEWS)
         )).thenReturn(1L);
@@ -102,7 +96,6 @@ class ChallengeApplicationTests {
         marketingDto.setType(NotificationType.MARKETING);
         marketingDto.setDestinationMail("user@example.com");
 
-        // Simular que no se han enviado notificaciones de marketing en la última hora
         when(notificationRepository.countByLocalDateTimeSendedBetweenAndReceiverEmailAndType(
                 any(LocalDateTime.class), any(LocalDateTime.class), eq("user@example.com"), eq(NotificationType.MARKETING)
         )).thenReturn(0L);
@@ -116,7 +109,6 @@ class ChallengeApplicationTests {
         marketingDto.setType(NotificationType.MARKETING);
         marketingDto.setDestinationMail("user@example.com");
 
-        // Simular que se han enviado 3 notificaciones de marketing en la última hora
         when(notificationRepository.countByLocalDateTimeSendedBetweenAndReceiverEmailAndType(
                 any(LocalDateTime.class), any(LocalDateTime.class), eq("user@example.com"), eq(NotificationType.MARKETING)
         )).thenReturn(3L);
