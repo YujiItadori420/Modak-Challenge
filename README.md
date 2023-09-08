@@ -12,33 +12,23 @@ This project is a sample application that handles the sending of email notificat
 - MySql
 - GitHub
 
+## Specification
+**[Swagger with the app running locally](localhost:8080/docs)**
+
 ## Project Setup
-
-1. **Clone the Repository**
-
-   To get started with this project, clone the repository from GitHub:
-
-   ```bash
-   git clone <https://github.com/YujiItadori420/Modak-Challenge>
-
-2. **Run in Docker**
-```shell
-FROM openjdk:17-alpine
-ARG JAR_FILE=build/libs/app.jar
-COPY ${JAR_FILE} /srv/app.jar
-
-COPY src/main/resources/application.properties /srv
-
-RUN addgroup -S appuser && adduser -S appuser -G appuser
-RUN chown -R appuser. /srv/
-
-WORKDIR /srv
-
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","app.jar","--spring.config.location=file:/srv/application.properties"]
+1. ### Create local databases with MySql and Docker
+```
+docker pull --platform linux/x86_64 mysql:8.0
+docker run --platform linux/x86_64 --name mysql -p 3306:3306 -d -e 'MYSQL_ROOT_PASSWORD=P4ssw0rd!' mysql:8.0
+```
+2. ### Log in to mysql
+```
+docker exec -it mysql bash
+mysql -u root -p
+  P4ssw0rd!
 ```
 
-3. **Create Database**
-
+3. ### Create DBs
 ```
 CREATE DATABASE `user`;
 ```
