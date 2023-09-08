@@ -24,6 +24,6 @@ public class Notification {
     private String message;
     private LocalDateTime localDateTimeSended;
     @ManyToOne
-    @JoinColumn(name = "email") // Nombre de la columna que hace referencia al usuario en la tabla de notificaciones
+    @JoinColumn(name = "email")
     private User receiver;
 }
